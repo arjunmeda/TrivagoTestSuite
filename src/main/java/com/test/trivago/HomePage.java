@@ -32,13 +32,11 @@ public class HomePage {
 	@FindBy(xpath = "//li[contains(@class,'toolbar-list__item--rating')]/button")
 	WebElement guestRatingDropdown;
 
-
 	@FindBy(xpath = "//div[@class='refinement-row__content']/ul/li[2]/button")
 	WebElement ratingButton8star;
 
 	@FindBy(xpath = "//span[text()='Azaya Beach Resort Goa']/ancestor::div[@class='item__details item__details--reduced']/following-sibling::section/..//button[@data-qa='champion-deal']")
 	WebElement azayaViewDealBtn;
-
 
 	public HomePage(WebDriver driver, Common common) {
 		PageFactory.initElements(driver, this);
@@ -53,13 +51,13 @@ public class HomePage {
 	public void searchWithNeededCriteria(String place, String hotel, String checkinDate, String checkoutDate,
 			int numOfAdults) {
 		common.waitUntil(searchTextBox).sendKeys(place);
-		sleepFor(2000);
+		common.sleepFor(2000);
 		fillCheckInCheckOutDates(checkinDate, checkoutDate);
 		common.waitUntil(removeAdultBtn).click();
 		common.waitUntil(searchBtn).click();
 		common.waitUntil(guestRatingDropdown).click();
 		common.waitUntil(ratingButton8star).click();
-		sleepFor(2000);
+		common.sleepFor(2000);
 		viewDealFor(hotel);
 
 	}
@@ -76,14 +74,6 @@ public class HomePage {
 		String viewDealXpath = "//span[text()='" + hotelName
 				+ "']/ancestor::div[@class='item__details item__details--reduced']/following-sibling::section/..//button[@data-qa='champion-deal']";
 		common.waitUntilBy(By.xpath(viewDealXpath)).click();
-	}
-
-	private void sleepFor(long milliSeconds) {
-		try {
-			Thread.sleep(milliSeconds);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
 	}
 
 }

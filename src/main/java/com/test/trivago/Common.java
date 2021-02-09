@@ -60,6 +60,15 @@ public class Common {
 
 		Reporter.log(screenPath);
 	}
+	
+	public void sleepFor(long milliSeconds) {
+		try {
+			Thread.sleep(milliSeconds);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+	}
+
 
 	
 }

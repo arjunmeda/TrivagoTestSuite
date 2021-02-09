@@ -6,15 +6,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 @Test(groups = { "smoke" })
 public class TrivagoTestSuite {
-
 	WebDriver driver;
-
 	HomePage homePage;
 	LoginPage loginPage;
 	BookingdotComPage bookingdotComPage;
@@ -39,7 +38,7 @@ public class TrivagoTestSuite {
 	}
 
 //	@Test(groups = { "smoke", "trivago" }, priority = 1)
-//	public void Login() throws InterruptedException {
+//	public void testLogin() throws InterruptedException {
 //		//loginPage.createAccount("arjunmeda@gmail.com", "Arjun*123456");
 //		loginPage.register("arjunmeda2422@gmail.com");
 //		loginPage.registerPassword("Arjun*123456");
@@ -47,33 +46,30 @@ public class TrivagoTestSuite {
 //	}
 
 	@Test(groups = { "smoke", "trivago" }, priority = 2)
-	public void searchForPlace() throws InterruptedException {
-		homePage.searchWithNeededCriteria("Goa", "Azaya Beach Resort Goa", "2021-02-12", "2021-02-14", 1);
-		String winHandleBefore = driver.getWindowHandle();
-		for (String winHandle : driver.getWindowHandles()) // Switch to new window opened.
-		{
-			driver.switchTo().window(winHandle);
-		}
-
-		bookingdotComPage.seeAvailabilityFor("Azaya Beach Resort Goa");
-		Assert.assertTrue(driver.getTitle().contains("Azaya Beach Resort Goa"));
-		bookingdotComPage.selectRooms("Essence Room King Bed", "1");
-		bookingdotComPage.reserveRoom("Essence Room King Bed");
-		Assert.assertTrue(driver.getTitle().contains("Your details"));
-		bookingdotComPage.fillGuestDetails("Arjun", "M", "arjun@gmail.com");
-		sleepFor(1000);
-		Assert.assertTrue(driver.getTitle().contains("Final details"));
-		driver.close();
-		driver.switchTo().window(winHandleBefore);
-
-	}
-
-	private void sleepFor(long milliSeconds) {
+	public void testHotelBooking() {
 		try {
-			Thread.sleep(milliSeconds);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+			homePage.searchWithNeededCriteria("Goa", "Azaya Beach Resort Goa", "2021-02-12", "2021-02-14", 1);
+			String winHandleBefore = driver.getWindowHandle();
+			for (String winHandle : driver.getWindowHandles()) // Switch to new window opened.
+			{
+				driver.switchTo().window(winHandle);
+			}
+
+			bookingdotComPage.seeAvailabilityFor("Azaya Beach Resort Goa");
+			Assert.assertTrue(driver.getTitle().contains("Azaya Beach Resort Goa"));
+			bookingdotComPage.selectRooms("Essence Room King Bed", "1");
+			bookingdotComPage.reserveRoom("Essence Room King Bed");
+			Assert.assertTrue(driver.getTitle().contains("Your details"));
+			bookingdotComPage.fillGuestDetails("Arjun", "M", "arjun@gmail.com");
+			common.sleepFor(1000);
+			Assert.assertTrue(driver.getTitle().contains("Final details"));
+			driver.close();
+			driver.switchTo().window(winHandleBefore);
+		} catch (Exception e) {
+			common.captureScreenshot("");
+			AssertJUnit.fail("Exception " + e);
 		}
+
 	}
 
 	@AfterClass(alwaysRun = true)
